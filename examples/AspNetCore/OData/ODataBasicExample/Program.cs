@@ -4,7 +4,11 @@ var builder = WebApplication.CreateBuilder( args );
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddOData();
+builder.Services.AddControllers().AddOData(opt =>
+{
+    opt.EnableQueryFeatures(100);
+    opt.RouteOptions.EnableNonParenthesisForEmptyParameterFunction = true;
+} );
 builder.Services.AddProblemDetails();
 builder.Services.AddApiVersioning()
                 .AddOData(
@@ -26,7 +30,7 @@ builder.Services.AddApiVersioning()
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
+app.UseODataRouteDebug();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
